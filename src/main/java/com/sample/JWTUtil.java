@@ -63,12 +63,12 @@ public class JWTUtil {
 
   /**
    *
-   * @param claimsMap
+   * @param claims
    * @param secretApiKey
    * @param expirationMilliseconds
    * @return
    */
-  public static String generateToken(Map claimsMap, String secretApiKey, long expirationMilliseconds) {
+  public static String generateToken(Map header, Map claims, String secretApiKey, long expirationMilliseconds) {
 
     //The JWT signature algorithm we will be using to sign the token
     SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -82,7 +82,8 @@ public class JWTUtil {
 
     //Let's set the JWT Claims
     JwtBuilder builder = Jwts.builder()
-      .setClaims(claimsMap)
+      .setHeader(header)
+      .setClaims(claims)
       .signWith(signatureAlgorithm, signingKey);
 
     //if it has been specified, let's add the expiration

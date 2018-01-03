@@ -1,6 +1,7 @@
 package com.sample;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwsHeader;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
 
@@ -41,11 +42,17 @@ public class JWTUtilTest {
     Map claimsMap = new HashMap();
     claimsMap.put("apikey", apiKey);
     claimsMap.put("scope","[admin, read, write]");
-    token = JWTUtil.generateToken(claimsMap, secretKey, 10000);
+
+    Map headersMap = new HashMap();
+    headersMap.put("header1","test");
+
+    token = JWTUtil.generateToken(headersMap, claimsMap, secretKey, 10000);
     claims = JWTUtil.parseJWTToken(secretKey, token).getBody();
+    JwsHeader header = JWTUtil.parseJWTToken(secretKey, token).getHeader();
 
     log.info("ApiKey: {}" , claims.get("apikey"));
     log.info("scope: {}" , claims.get("scope"));
+    log.info("header1: {}" , header.get("header1"));
   }
 
 
